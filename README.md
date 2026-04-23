@@ -148,7 +148,7 @@ streamlit run app.py
 
 ## Контакты
 
-- **Email:** slipernik@me.com
+- **Email:** auhmilin@gmail.com
 - **GitHub:** https://github.com/Slipernik/ml-portfolio
 - **Telegram:** @LeshkaGarmoshka
 
