@@ -1,0 +1,2067 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Алексей Ухмылин — Junior ML Engineer / Computer Vision Engineer</title>
+  <meta
+    name="description"
+    content="Портфолио Алексея Ухмылина — Junior ML Engineer / Computer Vision Engineer. Computer Vision, PyTorch, semantic segmentation, inference и demo-приложения."
+  />
+  <style>
+    :root {
+      --bg: #07101f;
+      --bg-2: #0c1630;
+      --bg-3: #101d3c;
+      --surface: rgba(15, 22, 43, 0.74);
+      --surface-2: rgba(255, 255, 255, 0.06);
+      --surface-3: rgba(255, 255, 255, 0.03);
+      --border: rgba(255, 255, 255, 0.10);
+      --text: #eef3ff;
+      --muted: #97a4be;
+      --dark: #162135;
+      --light-bg: #f4f7fc;
+      --light-card: #ffffff;
+      --light-text: #172235;
+      --light-muted: #617089;
+      --accent: #6f88ff;
+      --accent-2: #4f6ef7;
+      --accent-3: #8ec5ff;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --shadow-lg: 0 30px 80px rgba(2, 8, 23, 0.38);
+      --shadow-md: 0 18px 40px rgba(15, 23, 42, 0.10);
+      --radius-xl: 30px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+      --container: 1240px;
+      --gutter: clamp(16px, 3vw, 36px);
+      --grid-gap: clamp(18px, 2.2vw, 28px);
+      --transition: 260ms cubic-bezier(.2,.8,.2,1);
+      --nav-h: 76px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at 14% 10%, rgba(111, 136, 255, 0.20), transparent 24%),
+        radial-gradient(circle at 86% 14%, rgba(142, 197, 255, 0.14), transparent 20%),
+        radial-gradient(circle at 50% 100%, rgba(79, 110, 247, 0.12), transparent 25%),
+        linear-gradient(180deg, #060c18 0%, #091121 28%, #0a1020 100%);
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background-size: 40px 40px;
+      mask-image: radial-gradient(circle at center, black 40%, transparent 85%);
+      opacity: 0.28;
+      z-index: -2;
+    }
+
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+    button, input, textarea { font: inherit; }
+
+    .container {
+      width: min(var(--container), calc(100% - (var(--gutter) * 2)));
+      margin: 0 auto;
+    }
+
+    .section {
+      position: relative;
+      padding: 88px 0;
+    }
+
+    .section-light {
+      background: linear-gradient(180deg, #f7f9fd 0%, #edf2fb 100%);
+      color: var(--light-text);
+    }
+
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      align-items: end;
+      margin-bottom: 34px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      gap: 8px;
+      align-items: center;
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 28px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent), transparent);
+    }
+
+    h1, h2, h3, h4, p { margin: 0; }
+
+    h1 {
+      font-size: clamp(34px, 4.8vw, 62px);
+      line-height: .96;
+      letter-spacing: -0.05em;
+      margin-bottom: 18px;
+      max-width: 11ch;
+      text-wrap: balance;
+    }
+
+    h2 {
+      font-size: clamp(28px, 3.5vw, 48px);
+      line-height: 1.04;
+      letter-spacing: -0.04em;
+      margin-bottom: 14px;
+      text-wrap: balance;
+    }
+
+    h3 {
+      font-size: clamp(22px, 2.2vw, 24px);
+      line-height: 1.18;
+      letter-spacing: -0.02em;
+      text-wrap: balance;
+    }
+
+    p.lead {
+      font-size: 18px;
+      line-height: 1.72;
+      color: var(--muted);
+      max-width: 660px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(90deg, #aab7ff 0%, #b48dff 45%, #80e0ff 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .muted { color: var(--muted); }
+    .light-muted { color: var(--light-muted); }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(18px);
+      background: rgba(8, 13, 27, 0.56);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .nav-inner {
+      min-height: var(--nav-h);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 14px;
+      font-weight: 800;
+      letter-spacing: .01em;
+    }
+
+    .brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-size: 14px;
+      background: linear-gradient(135deg, rgba(111,136,255,.96), rgba(79,110,247,.92));
+      box-shadow: 0 14px 36px rgba(111,136,255,0.30);
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      color: #b6c2d7;
+      font-size: 14px;
+    }
+
+    .nav-links a {
+      position: relative;
+      transition: color var(--transition);
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -6px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-3));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform var(--transition);
+    }
+
+    .nav-links a:hover {
+      color: #fff;
+    }
+
+    .nav-links a:hover::after {
+      transform: scaleX(1);
+    }
+
+    .hero {
+      padding: 56px 0 44px;
+      overflow: hidden;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: minmax(320px, .72fr) minmax(0, 1.28fr);
+      gap: clamp(24px, 2.6vw, 36px);
+      align-items: center;
+    }
+
+    .hero-copy {
+      max-width: 840px;
+    }
+
+    .pill-row {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 16px;
+      border-radius: 999px;
+      background: rgba(111,136,255,0.12);
+      border: 1px solid rgba(111,136,255,0.30);
+      color: #d7ddff;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .hero-copy .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px 18px;
+      color: #b0bbcf;
+      font-size: 14px;
+      margin: 24px 0 26px;
+      max-width: 620px;
+    }
+
+    .hero-copy .meta span {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: nowrap;
+      margin: 0;
+    }
+
+    .hero-actions .btn {
+      min-height: 50px;
+      padding: 0 18px;
+      white-space: nowrap;
+    }
+
+    .btn {
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      min-height: 54px;
+      padding: 0 22px;
+      border-radius: 16px;
+      font-weight: 700;
+      border: 1px solid transparent;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition), border-color var(--transition), color var(--transition);
+      cursor: pointer;
+    }
+
+    .btn-icon {
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
+    .btn-icon svg {
+      width: 100%;
+      height: 100%;
+      display: block;
+      fill: currentColor;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      color: #ffffff;
+      box-shadow: 0 18px 42px rgba(111,136,255,0.30);
+    }
+
+    .btn-secondary {
+      background: rgba(255,255,255,0.04);
+      border-color: rgba(255,255,255,0.12);
+      color: #edf2ff;
+    }
+
+    .btn-github {
+      background: linear-gradient(180deg, rgba(244, 248, 255, 1), rgba(226, 235, 250, 1));
+      border-color: rgba(255,255,255,.5);
+      color: #13213a;
+      box-shadow: 0 16px 34px rgba(2, 8, 23, .22);
+    }
+
+    .btn-github:hover {
+      background: linear-gradient(180deg, rgba(255,255,255,1), rgba(237, 243, 252, 1));
+      border-color: rgba(255,255,255,.62);
+      color: #0f1b30;
+      box-shadow: 0 20px 40px rgba(2, 8, 23, .28);
+    }
+
+    .btn-sm {
+      min-height: 44px;
+      padding: 0 16px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .hero-kicker {
+      font-size: 13px;
+      line-height: 1.3;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: #aab7d5;
+      margin-bottom: 12px;
+    }
+
+    .hero-role {
+      max-width: 15ch;
+      margin-bottom: 18px;
+    }
+
+    .hero-location {
+      margin-top: 18px;
+      color: #aab7d5;
+      font-size: 15px;
+      line-height: 1.7;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-width: 0;
+    }
+
+    .hero-photo-shell {
+      position: relative;
+      overflow: hidden;
+      border-radius: 32px;
+      aspect-ratio: 4 / 5;
+      border: 1px solid rgba(255,255,255,.08);
+      background:
+        linear-gradient(180deg, rgba(18,28,52,.90), rgba(10,16,31,.84));
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hero-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+
+    .mini-stat strong {
+      display: block;
+      color: #fff;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .mini-stat span {
+      display: block;
+      color: #aab7d5;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .about-shell {
+      display: grid;
+      gap: 26px;
+    }
+
+    .about-intro {
+      display: grid;
+      grid-template-columns: minmax(0, 1.18fr) minmax(340px, .82fr);
+      gap: 28px;
+      align-items: start;
+    }
+
+    .about-intro .section-head {
+      margin-bottom: 0;
+    }
+
+    .about-copy {
+      max-width: none;
+    }
+
+    .section-intro {
+      max-width: 760px;
+      color: var(--light-muted);
+      font-size: 17px;
+      line-height: 1.75;
+      margin-top: 12px;
+    }
+
+    .process-grid,
+    .stack-groups,
+    .experience-cards {
+      display: grid;
+      gap: 20px;
+    }
+
+    .process-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 30px;
+    }
+
+    .process-step {
+      padding: 24px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.92);
+      border: 1px solid rgba(111, 136, 255, .12);
+      box-shadow: 0 16px 36px rgba(15, 23, 42, .06);
+    }
+
+    .step-index {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      margin-bottom: 14px;
+      background: rgba(111,136,255,.12);
+      color: #4e5fd1;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .process-step p {
+      color: var(--light-muted);
+      line-height: 1.7;
+      font-size: 15px;
+    }
+
+    .featured-project {
+      grid-column: span 2;
+      display: flex;
+      flex-direction: column;
+      border-color: rgba(111,136,255,.16);
+      box-shadow: 0 30px 72px rgba(2, 8, 23, .30);
+    }
+
+    .featured-project::before {
+      display: none;
+    }
+
+    .featured-project .project-preview {
+      order: 1;
+      aspect-ratio: 1204 / 776;
+      max-height: 360px;
+      min-height: 0;
+      border-top: none;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      border-right: none;
+      background: #0b0f18;
+    }
+
+    .featured-project .project-body {
+      order: 2;
+      padding: 24px 24px 26px;
+    }
+
+    .featured-project h3 {
+      font-size: clamp(26px, 2.2vw, 34px);
+      line-height: 1.08;
+      margin-bottom: 8px;
+    }
+
+    .project-shot {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      object-position: center;
+    }
+
+    .project-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    .project-actions .btn {
+      min-height: 46px;
+      border-radius: 14px;
+    }
+
+    .project-actions .btn-secondary {
+      background: rgba(255,255,255,.09);
+      border-color: rgba(255,255,255,.18);
+      color: #f6f9ff;
+      box-shadow: 0 12px 28px rgba(2, 8, 23, .16);
+    }
+
+    .project-actions .btn-secondary:hover {
+      background: rgba(255,255,255,.12);
+      border-color: rgba(159,176,203,.34);
+      box-shadow: 0 16px 34px rgba(2, 8, 23, .22);
+    }
+
+    .project-actions .btn-github {
+      background: linear-gradient(180deg, rgba(244, 248, 255, 1), rgba(226, 235, 250, 1));
+      border-color: rgba(255,255,255,.5);
+      color: #13213a;
+      box-shadow: 0 16px 34px rgba(2, 8, 23, .22);
+    }
+
+    .project-actions .btn-github:hover {
+      background: linear-gradient(180deg, rgba(255,255,255,1), rgba(237, 243, 252, 1));
+      border-color: rgba(255,255,255,.62);
+      color: #0f1b30;
+      box-shadow: 0 20px 40px rgba(2, 8, 23, .28);
+    }
+
+    .project-btn-accent {
+      background: linear-gradient(135deg, rgba(111,136,255,.98), rgba(79,110,247,.98));
+      border-color: transparent;
+      color: #fff;
+      box-shadow: 0 16px 34px rgba(79, 110, 247, .28);
+    }
+
+    .project-btn-accent:hover {
+      box-shadow: 0 20px 40px rgba(79, 110, 247, .34);
+    }
+
+    .stack-groups {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      margin-top: 28px;
+    }
+
+    .stack-group {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding: 24px;
+      border-radius: 24px;
+      background: #fff;
+      border: 1px solid rgba(15,23,42,.06);
+      box-shadow: var(--shadow-md);
+    }
+
+    .stack-group-label {
+      display: inline-flex;
+      align-items: center;
+      width: fit-content;
+      padding: 7px 10px;
+      border-radius: 999px;
+      background: rgba(111,136,255,.10);
+      color: #4e5fd1;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .stack-group h3 {
+      margin: 0;
+      font-size: 22px;
+      line-height: 1.15;
+    }
+
+    .stack-group p {
+      color: var(--light-muted);
+      line-height: 1.75;
+      font-size: 15px;
+      margin: 0;
+    }
+
+    .stack-items {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .stack-item {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: rgba(23,34,53,.05);
+      border: 1px solid rgba(23,34,53,.08);
+      color: #334155;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .experience-cards {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 28px;
+    }
+
+    .experience-card {
+      padding: 24px;
+      border-radius: 24px;
+      background: #fff;
+      border: 1px solid rgba(15,23,42,.06);
+      box-shadow: 0 16px 36px rgba(15,23,42,.06);
+    }
+
+    .experience-card h3 {
+      margin-bottom: 10px;
+    }
+
+    .experience-card p {
+      color: var(--light-muted);
+      line-height: 1.72;
+      font-size: 15px;
+      margin: 0;
+    }
+
+    .hero-visual {
+      position: relative;
+      min-height: 620px;
+      isolation: isolate;
+      padding-top: 18px;
+    }
+
+    .hero-visual::before,
+    .hero-visual::after {
+      content: "";
+      position: absolute;
+      border-radius: 999px;
+      filter: blur(20px);
+      z-index: -1;
+      opacity: .85;
+      animation: floatY 8s ease-in-out infinite;
+    }
+
+    .hero-visual::before {
+      display: none;
+    }
+
+    .hero-visual::after {
+      display: none;
+    }
+
+    .glass {
+      position: absolute;
+      background: linear-gradient(180deg, rgba(18,28,52,.82), rgba(10,16,31,.70));
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 28px;
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(16px);
+    }
+
+    .scene-card {
+      top: 0;
+      right: 0;
+      width: min(100%, 620px);
+      padding: 16px;
+      transform: translateZ(0);
+      animation: floatSlow 7s ease-in-out infinite;
+    }
+
+    .scene-topbar,
+    .code-topbar,
+    .metric-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+      gap: 12px;
+    }
+
+    .window-dots {
+      display: flex;
+      gap: 8px;
+    }
+
+    .window-dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.16);
+    }
+
+    .label-chip {
+      padding: 7px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #d9e1f4;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .scene {
+      position: relative;
+      height: 376px;
+      border-radius: 22px;
+      overflow: hidden;
+      background:
+        linear-gradient(180deg, rgba(8,12,24,.04), rgba(8,12,24,.18)),
+        linear-gradient(135deg, #1d2942 0%, #121b30 100%);
+    }
+
+    .scene::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.08), transparent 22%),
+        repeating-linear-gradient(90deg, transparent 0 42px, rgba(255,255,255,.025) 42px 43px);
+      opacity: .5;
+      mix-blend-mode: screen;
+    }
+
+    .scene-ui {
+      position: absolute;
+      inset: 18px;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: 14px;
+      z-index: 1;
+    }
+
+    .scene-toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .scene-pills {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .scene-pill {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #dbe5ff;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .scene-pill.is-active {
+      color: #fff;
+      background: rgba(111,136,255,.18);
+      border-color: rgba(111,136,255,.34);
+      box-shadow: 0 10px 22px rgba(111,136,255,.18);
+    }
+
+    .scene-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #c7d4eb;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .scene-toggle::before {
+      content: "";
+      width: 34px;
+      height: 20px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 72% 50%, #fff 0 31%, transparent 34%),
+        linear-gradient(135deg, rgba(255,173,97,.85), rgba(255,129,86,.9));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+
+    .scene-compare {
+      position: relative;
+      overflow: hidden;
+      border-radius: 20px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(180deg, rgba(8,12,24,.14), rgba(8,12,24,.32));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    .scene-compare::before {
+      content: "";
+      position: absolute;
+      inset: 0 44% 0 0;
+      background:
+        linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.02)),
+        url('segmentation/mapillary-vistas-segmentation/demo/examples/2GRNyL_tZVU17fWLIpZ7yA.jpg');
+      background-size: cover;
+      background-position: center;
+      box-shadow: 1px 0 0 rgba(255,255,255,.07);
+    }
+
+    .scene-compare::after {
+      content: "";
+      position: absolute;
+      inset: 0 0 0 46%;
+      background:
+        linear-gradient(180deg, rgba(8,12,24,.04), rgba(8,12,24,.12)),
+        url('assets/segmentation-demo.png');
+      background-size: 248% auto;
+      background-position: 82.5% 45%;
+      filter: saturate(1.02) contrast(1.04);
+    }
+
+    .scene-mask {
+      display: none;
+    }
+
+    .scene-slider-line {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 46%;
+      width: 3px;
+      background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.55));
+      box-shadow: 0 0 0 1px rgba(15,23,42,.08), 0 0 24px rgba(255,255,255,.14);
+      z-index: 3;
+    }
+
+    .scene-slider-handle {
+      position: absolute;
+      left: calc(46% - 18px);
+      top: 50%;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.94);
+      box-shadow: 0 14px 34px rgba(15,23,42,.36);
+      transform: translateY(-50%);
+      z-index: 4;
+    }
+
+    .scene-slider-handle::before,
+    .scene-slider-handle::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 6px solid transparent;
+      border-bottom: 6px solid transparent;
+    }
+
+    .scene-slider-handle::before {
+      left: 9px;
+      border-right: 8px solid #1b2940;
+    }
+
+    .scene-slider-handle::after {
+      right: 9px;
+      border-left: 8px solid #1b2940;
+    }
+
+    .scene-label {
+      position: absolute;
+      top: 14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #fff;
+      background: rgba(10,16,31,.58);
+      border: 1px solid rgba(255,255,255,.08);
+      z-index: 4;
+    }
+
+    .scene-label.is-left { left: 14px; }
+    .scene-label.is-right { right: 14px; }
+
+    .scene-alpha {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 12px;
+      align-items: center;
+      padding: 12px 14px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04);
+    }
+
+    .scene-alpha span,
+    .scene-alpha strong {
+      font-size: 12px;
+      font-weight: 700;
+      color: #dbe5ff;
+    }
+
+    .scene-alpha strong {
+      color: #ff8f8f;
+      letter-spacing: .02em;
+    }
+
+    .scene-alpha-bar {
+      position: relative;
+      height: 4px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+      overflow: hidden;
+    }
+
+    .scene-alpha-bar::before {
+      content: "";
+      position: absolute;
+      inset: 0 30% 0 0;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #ff6470, #ff856c);
+    }
+
+    .scene-alpha-bar::after {
+      content: "";
+      position: absolute;
+      right: 28%;
+      top: 50%;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #ff5c5c;
+      border: 2px solid #ffd0d0;
+      transform: translateY(-50%);
+      box-shadow: 0 0 0 6px rgba(255,92,92,.12);
+    }
+
+    .code-card {
+      left: -26px;
+      bottom: 26px;
+      width: min(48%, 320px);
+      padding: 18px 18px 16px;
+      animation: floatSlow 7.5s ease-in-out infinite reverse;
+    }
+
+    .code-card pre {
+      margin: 0;
+      font-size: 12.5px;
+      line-height: 1.76;
+      color: #d8e2f3;
+      white-space: pre-wrap;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .metric-card {
+      right: 0;
+      bottom: 10px;
+      width: min(46%, 310px);
+      padding: 16px;
+      animation: floatSlow 8.3s ease-in-out infinite;
+      animation-delay: -1.5s;
+    }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .metric-item {
+      padding: 14px 12px;
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.07);
+    }
+
+    .metric-item strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 4px;
+    }
+
+    .metric-item span {
+      display: block;
+      color: #a5b2cb;
+      font-size: 12px;
+      line-height: 1.4;
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: minmax(300px, 360px) minmax(0, 1fr);
+      gap: clamp(28px, 3vw, 44px);
+      align-items: start;
+    }
+
+    .profile-card {
+      background: linear-gradient(180deg, #ffffff, #eef3fb);
+      border-radius: 30px;
+      padding: 24px;
+      box-shadow: 0 22px 52px rgba(15,23,42,0.10);
+      border: 1px solid rgba(15,23,42,0.05);
+    }
+
+    .about-grid > .reveal {
+      max-width: 760px;
+    }
+
+    .avatar {
+      position: relative;
+      aspect-ratio: 1/.95;
+      border-radius: 26px;
+      overflow: hidden;
+      background:
+        radial-gradient(circle at 50% 18%, rgba(255,255,255,.8), transparent 22%),
+        linear-gradient(180deg, #dbe5f5 0%, #bccce6 52%, #b0c0dc 100%);
+    }
+
+    .avatar::before {
+      content: "";
+      position: absolute;
+      inset: auto 12% 0 12%;
+      height: 54%;
+      background: linear-gradient(180deg, #1c2431, #0f1728);
+      border-radius: 120px 120px 28px 28px;
+    }
+
+    .avatar::after {
+      content: "АУ";
+      position: absolute;
+      left: 50%;
+      top: 20%;
+      transform: translateX(-50%);
+      width: 40%;
+      aspect-ratio: 1;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      font-size: 42px;
+      font-weight: 900;
+      color: #1f2c45;
+      background:
+        radial-gradient(circle at 50% 34%, #f8ddca 0%, #edc2a9 70%, #d6a789 100%);
+      box-shadow: inset 0 -20px 0 rgba(37,50,71,.06);
+    }
+
+    .profile-mini {
+      display: grid;
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .profile-mini-card {
+      padding: 14px 16px;
+      border-radius: 16px;
+      background: rgba(23,34,53,.04);
+      border: 1px solid rgba(23,34,53,.08);
+    }
+
+    .profile-mini-card strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+      color: #1b2940;
+    }
+
+    .profile-mini-card span {
+      color: #5d6b83;
+      font-size: 14px;
+      line-height: 1.45;
+    }
+
+    .stats-grid {
+      margin-top: 26px;
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .stat-card {
+      background: #fff;
+      border: 1px solid rgba(15,23,42,0.06);
+      border-radius: 18px;
+      padding: 18px 16px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .stat-card strong {
+      display: block;
+      font-size: 26px;
+      letter-spacing: -.03em;
+      margin-bottom: 4px;
+      color: #111827;
+    }
+
+    .stat-card span {
+      font-size: 14px;
+      color: #617089;
+      line-height: 1.45;
+    }
+
+    .strength-grid,
+    .experience-grid,
+    .project-grid,
+    .contact-grid,
+    .footer-grid {
+      display: grid;
+      gap: var(--grid-gap);
+    }
+
+    .strength-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .feature-card {
+      border-radius: 26px;
+      padding: 26px;
+      border: 1px solid rgba(15,23,42,0.07);
+      background: #fff;
+      box-shadow: 0 18px 40px rgba(15,23,42,.06);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .feature-card:hover,
+    .project-card:hover,
+    .timeline-card:hover,
+    .stack-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 22px 48px rgba(15,23,42,.10);
+    }
+
+    .feature-card ul,
+    .project-card ul,
+    .timeline-card ul,
+    .contact-list,
+    .stack-list {
+      margin: 16px 0 0;
+      padding-left: 18px;
+    }
+
+    .feature-card li,
+    .project-card li,
+    .timeline-card li,
+    .contact-list li,
+    .stack-list li {
+      color: var(--light-muted);
+      line-height: 1.74;
+      margin-bottom: 8px;
+    }
+
+    .projects-section {
+      background: linear-gradient(180deg, #081120 0%, #0a1020 100%);
+    }
+
+    .project-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .project-card {
+      position: relative;
+      border-radius: 26px;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(18,25,47,.90), rgba(8,12,24,.88));
+      border: 1px solid rgba(255,255,255,.08);
+      box-shadow: var(--shadow-lg);
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+    }
+
+    .project-card:hover {
+      border-color: rgba(111,136,255,.26);
+    }
+
+    .project-preview {
+      aspect-ratio: 1907 / 919;
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      padding: 14px;
+      background: #0b0f18;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .project-preview .mini-grid {
+      position: absolute;
+      inset: auto 0 0 0;
+      height: 48%;
+      clip-path: polygon(18% 0, 82% 0, 100% 100%, 0 100%);
+      background-image:
+        linear-gradient(rgba(111,136,255,.18) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(111,136,255,.18) 1px, transparent 1px);
+      background-size: 18px 18px;
+    }
+
+    .project-preview .mini-box,
+    .project-preview .mini-mask,
+    .project-preview .mini-chart {
+      position: absolute;
+      border-radius: 12px;
+      border: 2px solid currentColor;
+    }
+
+    .project-preview .mini-mask {
+      background: rgba(255,255,255,.08);
+      border-style: dashed;
+    }
+
+    .project-preview .mini-chart {
+      border: none;
+      background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.02));
+      clip-path: polygon(0 70%, 16% 60%, 34% 65%, 50% 40%, 64% 48%, 80% 20%, 100% 28%, 100% 100%, 0 100%);
+    }
+
+    .project-body {
+      padding: 22px 22px 24px;
+    }
+
+    .project-meta {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      color: #9fb0cb;
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+      margin-bottom: 12px;
+    }
+
+    .featured-project .project-meta {
+      padding: 0;
+      border-radius: 0;
+      color: #c1d0ea;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+    }
+
+    .project-body p {
+      color: #9aa8c2;
+      line-height: 1.75;
+      font-size: 16px;
+      margin: 12px 0 18px;
+    }
+
+    .project-note {
+      color: #b8c6de;
+      font-size: 14px;
+      line-height: 1.65;
+      margin: -4px 0 18px;
+    }
+
+    .project-note strong {
+      color: #eef3ff;
+    }
+
+    .project-facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0 20px;
+    }
+
+    .project-fact {
+      padding: 14px 14px 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(255,255,255,.04);
+    }
+
+    .project-fact strong {
+      display: block;
+      color: #f4f7ff;
+      font-size: 18px;
+      line-height: 1.2;
+      margin-bottom: 6px;
+    }
+
+    .project-fact span {
+      display: block;
+      color: #95a7c7;
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .featured-project .project-facts {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .featured-project .project-fact {
+      background: rgba(255,255,255,.03);
+      border-color: rgba(255,255,255,.07);
+    }
+
+    .project-card:not(.featured-project) .project-facts {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .project-card:not(.featured-project) .project-fact {
+      padding: 12px 12px 14px;
+    }
+
+    .tags {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .tag {
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      line-height: 1;
+      font-weight: 700;
+      color: #d8e2f5;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .stack-exp-wrap {
+      background: linear-gradient(180deg, #f7f9fd 0%, #edf2fb 100%);
+      color: var(--light-text);
+    }
+
+    .experience-grid {
+      grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    }
+
+    .stack-card,
+    .timeline-card {
+      background: #fff;
+      border-radius: 26px;
+      padding: 26px;
+      border: 1px solid rgba(15,23,42,.06);
+      box-shadow: var(--shadow-md);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+
+    .stack-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px 20px;
+      padding-left: 18px;
+    }
+
+    .timeline {
+      display: grid;
+      gap: 18px;
+      margin-top: 18px;
+    }
+
+    .timeline-item {
+      position: relative;
+      padding-left: 22px;
+    }
+
+    .timeline-item::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 8px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      box-shadow: 0 0 0 6px rgba(111,136,255,.12);
+    }
+
+    .timeline-item::after {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 20px;
+      bottom: -18px;
+      width: 2px;
+      background: linear-gradient(180deg, rgba(111,136,255,.35), rgba(111,136,255,.05));
+    }
+
+    .timeline-item:last-child::after { display: none; }
+
+    .timeline-item strong {
+      display: block;
+      font-size: 18px;
+      margin-bottom: 6px;
+      color: #121c2e;
+    }
+
+    .timeline-item .time {
+      display: inline-flex;
+      margin-bottom: 10px;
+      color: #4e5fd1;
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .04em;
+    }
+
+    .timeline-item p {
+      color: #64748b;
+      line-height: 1.72;
+      font-size: 16px;
+    }
+
+    .contact-wrap {
+      padding: 96px 0 84px;
+    }
+
+    .contact-shell {
+      position: relative;
+      overflow: hidden;
+      border-radius: 32px;
+      padding: 40px;
+      border: 1px solid rgba(255,255,255,.08);
+      background:
+        radial-gradient(circle at 10% 10%, rgba(111,136,255,.16), transparent 28%),
+        radial-gradient(circle at 92% 88%, rgba(142,197,255,.14), transparent 26%),
+        linear-gradient(135deg, rgba(18,26,49,.92), rgba(8,12,24,.92));
+      box-shadow: var(--shadow-lg);
+    }
+
+    .contact-shell::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: radial-gradient(circle at center, black 35%, transparent 85%);
+      opacity: .4;
+      pointer-events: none;
+    }
+
+    .contact-shell::after {
+      content: "";
+      position: absolute;
+      inset: 0 0 auto 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), var(--accent-3), transparent 72%);
+      opacity: .95;
+      pointer-events: none;
+    }
+
+    .contact-grid {
+      position: relative;
+      grid-template-columns: 1fr;
+      align-items: start;
+      gap: 0;
+      z-index: 1;
+    }
+
+    .hero-copy,
+    .hero-visual,
+    .profile-card,
+    .stack-card,
+    .timeline-card,
+    .project-card,
+    .contact-panel,
+    .contact-side,
+    .feature-card,
+    .stat-card {
+      min-width: 0;
+    }
+
+    .contact-panel,
+    .contact-side {
+      backdrop-filter: blur(12px);
+    }
+
+    .contact-panel p,
+    .contact-side p,
+    .contact-side li {
+      color: #a0aec8;
+      line-height: 1.78;
+    }
+
+    .contact-panel {
+      max-width: 960px;
+      display: grid;
+      gap: 18px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      border-radius: 0;
+    }
+
+    .contact-panel h2 {
+      max-width: 17ch;
+      margin: 0;
+    }
+
+    .contact-lead {
+      max-width: 760px;
+      color: #a9b7d1;
+      font-size: 18px;
+      line-height: 1.75;
+    }
+
+    .contact-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+
+    .contact-highlights {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 4px;
+    }
+
+    .contact-highlight {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 14px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.08);
+      color: #d9e5fb;
+      font-size: 13px;
+      font-weight: 700;
+      line-height: 1;
+    }
+
+    .footer {
+      padding: 24px 0 42px;
+      color: #8895ad;
+      font-size: 14px;
+    }
+
+    .footer-grid {
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      transition: opacity .7s ease, transform .7s ease;
+      will-change: opacity, transform;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @keyframes floatY {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+
+    @keyframes floatSlow {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes pulseBox {
+      0%, 100% { box-shadow: 0 0 0 1px rgba(255,255,255,.04), 0 0 18px rgba(0,0,0,.16); }
+      50% { box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 0 28px currentColor; }
+    }
+
+    @keyframes gridMove {
+      0% { background-position: 0 0, 0 0, 0 0; }
+      100% { background-position: 0 0, 0 20px, 20px 0; }
+    }
+
+    @media (max-width: 1280px) {
+      .project-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 1180px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-copy {
+        max-width: none;
+      }
+
+      .hero-visual {
+        max-width: 460px;
+      }
+
+      .featured-project {
+        grid-template-columns: 1fr;
+      }
+
+      .featured-project {
+        grid-column: span 1;
+      }
+
+      .featured-project .project-preview {
+        border-right: none;
+        border-bottom: 1px solid rgba(255,255,255,.08);
+      }
+
+      .project-facts {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .about-intro {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+
+      .process-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .stack-groups {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 980px) {
+      .hero-visual {
+        max-width: 420px;
+      }
+
+      .project-grid,
+      .stats-grid,
+      .experience-cards,
+      .contact-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .contact-panel,
+      .contact-side {
+        min-width: 0;
+      }
+    }
+
+    @media (max-width: 820px) {
+      :root { --nav-h: 70px; }
+
+      .nav-links { display: none; }
+      .section, .contact-wrap { padding: 72px 0; }
+      .hero { padding-top: 42px; }
+      .stats-grid,
+      .project-grid,
+      .process-grid,
+      .stack-groups,
+      .experience-cards,
+      .contact-grid,
+      .project-facts { grid-template-columns: 1fr; }
+      .section-head {
+        align-items: start;
+        margin-bottom: 26px;
+      }
+      .hero-visual {
+        max-width: 360px;
+      }
+
+      .hero-actions {
+        flex-wrap: wrap;
+      }
+
+      .contact-shell { padding: 22px; }
+      .footer-grid { grid-template-columns: 1fr; gap: 10px; }
+    }
+
+    @media (max-width: 560px) {
+      :root { --gutter: 12px; }
+      h1 { font-size: 36px; }
+      h2 { font-size: 30px; }
+      .hero-actions, .contact-actions { flex-direction: column; }
+      .btn { width: 100%; }
+      .hero-visual { max-width: none; }
+      .project-body, .feature-card, .stack-card, .timeline-card, .contact-panel, .contact-side, .stack-group, .experience-card, .process-step { padding: 20px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation: none !important;
+        transition: none !important;
+      }
+      .reveal {
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="nav">
+    <div class="container nav-inner">
+      <a class="brand" href="#top" aria-label="На главную">
+        <span class="brand-mark">АУ</span>
+        <span>Алексей Ухмылин</span>
+      </a>
+      <nav class="nav-links" aria-label="Основная навигация">
+        <a href="#about">Мой подход</a>
+        <a href="#projects">Проекты</a>
+        <a href="#stack">Стек</a>
+        <a href="#experience">Опыт</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div class="hero-visual reveal" id="hero-demo">
+          <div class="hero-photo-shell">
+            <img class="hero-photo" src="assets/photo.jpeg" alt="Алексей Ухмылин" />
+          </div>
+        </div>
+
+        <div class="hero-copy reveal">
+          <div class="hero-kicker">Алексей Ухмылин</div>
+          <h1 class="hero-role">Junior ML Engineer / Computer Vision Engineer</h1>
+          <p class="lead">
+            Разрабатываю end-to-end пайплайны на PyTorch для Computer Vision и прикладного ML: semantic segmentation, image classification, inference и demo-приложения. Сравниваю архитектуры, улучшаю метрики и довожу решения до результата, который можно быстро проверить на реальных примерах.
+          </p>
+          <p class="hero-location">Санкт-Петербург · удалённо / офис / гибрид · релокация по РФ и СНГ</p>
+
+          <div class="hero-actions" style="margin-top:24px;">
+            <a class="btn btn-primary" href="#projects">Смотреть проекты</a>
+            <a class="btn btn-secondary btn-github" href="https://github.com/Slipernik/ml-portfolio" target="_blank" rel="noreferrer"><span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.05c-3.34.73-4.04-1.42-4.04-1.42-.55-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.08 1.83 2.82 1.3 3.51 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.9 0-1.3.47-2.37 1.24-3.2-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.22a11.5 11.5 0 0 1 6 0c2.29-1.54 3.29-1.22 3.29-1.22.66 1.65.25 2.87.12 3.17.78.83 1.24 1.9 1.24 3.2 0 4.58-2.81 5.6-5.49 5.89.43.37.82 1.09.82 2.21v3.27c0 .32.21.69.83.58A12 12 0 0 0 12 .5Z"/></svg></span><span>GitHub</span></a>
+            <a class="btn btn-secondary" href="#contact">Связаться</a>
+            <a class="btn btn-secondary" href="Резюме.docx" download><span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3a1 1 0 0 1 1 1v8.59l2.3-2.29a1 1 0 1 1 1.4 1.41l-4 4a1 1 0 0 1-1.4 0l-4-4a1 1 0 1 1 1.4-1.41L11 12.59V4a1 1 0 0 1 1-1Zm-7 14a1 1 0 0 1 1 1v1h12v-1a1 1 0 1 1 2 0v2a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"/></svg></span><span>Резюме</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-light" id="about">
+      <div class="container about-shell">
+        <div class="about-intro">
+          <div class="section-head reveal">
+            <div>
+              <div class="eyebrow">Мой подход</div>
+              <h2>Собираю ML / CV проект как end-to-end pipeline, а не только обучаю модель</h2>
+            </div>
+          </div>
+
+          <div class="about-copy reveal">
+            <p class="lead light-muted">
+              Мне интересны задачи Machine Learning и Computer Vision, где важно не только получить метрику, но и понять, за счёт чего модель работает лучше или хуже.
+            </p>
+            <p class="section-intro">
+              Поэтому в проектах я иду от данных и baseline к воспроизводимому обучению, сравнению архитектур, анализу слабых мест и demo-проверке на реальных примерах.
+            </p>
+          </div>
+        </div>
+
+        <div class="process-grid">
+          <article class="process-step reveal">
+            <span class="step-index">01</span>
+            <h3>Данные и baseline</h3>
+            <p>Проверяю разметку, классы и качество набора, чтобы задать внятную стартовую точку.</p>
+          </article>
+          <article class="process-step reveal">
+            <span class="step-index">02</span>
+            <h3>Воспроизводимое обучение</h3>
+            <p>Собираю training pipeline с понятной конфигурацией, checkpoints и фиксацией экспериментов.</p>
+          </article>
+          <article class="process-step reveal">
+            <span class="step-index">03</span>
+            <h3>Сравнение и гипотезы</h3>
+            <p>Сравниваю архитектуры и настройки, ищу слабые места и проверяю гипотезы экспериментами.</p>
+          </article>
+          <article class="process-step reveal">
+            <span class="step-index">04</span>
+            <h3>Demo и inference</h3>
+            <p>Упаковываю результат в demo или inference-сценарий, который можно быстро показать и проверить.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section projects-section" id="projects">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="eyebrow">Избранные Проекты</div>
+            <h2>Кейсы, где есть и обучение моделей, и рабочий demo-сценарий</h2>
+          </div>
+        </div>
+
+        <div class="project-grid">
+          <article class="project-card featured-project reveal">
+            <div class="project-preview">
+              <img class="project-shot" src="assets/segmentation-demo-for-site.png" alt="Mapillary Vistas segmentation Streamlit demo" />
+            </div>
+            <div class="project-body">
+              <div class="project-meta">Главный кейс · Mapillary Vistas</div>
+              <h3>Mapillary Vistas Segmentation</h3>
+              <p>
+                Сегментация городских сцен на Mapillary Vistas с фокусом на редкие и мелкие классы.
+              </p>
+              <p>
+                Собрал end-to-end пайплайн: polygon JSON → segmentation masks → dataset → training → evaluation → Streamlit demo. Сравнил U-Net, DeepLabV3+ и SegFormer, отдельно анализировал качество на редком классе <code>animal</code> и улучшал результат через эксперименты с разрешением входа.
+              </p>
+              <div class="project-facts">
+                <div class="project-fact">
+                  <strong>0.650 mIoU</strong>
+                  <span>лучший baseline: SegFormer</span>
+                </div>
+                <div class="project-fact">
+                  <strong>0.664 mIoU</strong>
+                  <span>лучшая финальная конфигурация</span>
+                </div>
+                <div class="project-fact">
+                  <strong>0.295 IoU</strong>
+                  <span>качество на редком классе animal</span>
+                </div>
+              </div>
+              <div class="tags">
+                <span class="tag">PyTorch</span>
+                <span class="tag">PyTorch Lightning</span>
+                <span class="tag">MONAI</span>
+                <span class="tag">segmentation-models-pytorch</span>
+                <span class="tag">Streamlit</span>
+              </div>
+              <div class="project-actions">
+                <a class="btn btn-secondary btn-sm btn-github" href="https://github.com/Slipernik/ml-portfolio/tree/main/segmentation/mapillary-vistas-segmentation" target="_blank" rel="noreferrer"><span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.05c-3.34.73-4.04-1.42-4.04-1.42-.55-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.08 1.83 2.82 1.3 3.51 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.9 0-1.3.47-2.37 1.24-3.2-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.22a11.5 11.5 0 0 1 6 0c2.29-1.54 3.29-1.22 3.29-1.22.66 1.65.25 2.87.12 3.17.78.83 1.24 1.9 1.24 3.2 0 4.58-2.81 5.6-5.49 5.89.43.37.82 1.09.82 2.21v3.27c0 .32.21.69.83.58A12 12 0 0 0 12 .5Z"/></svg></span><span>GitHub</span></a>
+                <a class="btn btn-sm project-btn-accent" href="https://segmentation.slipernik.ru" target="_blank" rel="noreferrer"><span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3h6a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0V6.41l-8.29 8.3a1 1 0 0 1-1.42-1.42L17.59 5H14a1 1 0 1 1 0-2ZM5 5h5a1 1 0 1 1 0 2H6v11h11v-4a1 1 0 1 1 2 0v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/></svg></span><span>Streamlit demo</span></a>
+              </div>
+            </div>
+          </article>
+
+          <article class="project-card reveal">
+            <div class="project-preview">
+              <img class="project-shot" src="assets/classification-demo.png" alt="Image classification Streamlit demo" />
+            </div>
+            <div class="project-body">
+              <div class="project-meta">Animal Faces · Face Expression Recognition</div>
+              <h3>Image Classification / Face Emotions</h3>
+              <p>
+                Практический classification-кейс с обучением моделей и сборкой inference-пайплайна для двух сценариев: Animals и Face Emotions.
+              </p>
+              <p>
+                В проекте есть отдельный Streamlit demo, где можно переключать классификатор, загружать своё изображение и быстро проверять результат на примерах из датасета.
+              </p>
+              <div class="project-facts">
+                <div class="project-fact">
+                  <strong>2 режима</strong>
+                  <span>Animals и Face Emotions в одном demo</span>
+                </div>
+                <div class="project-fact">
+                  <strong>ONNX / optimization</strong>
+                  <span>Эксперименты с экспортом, дистиляцией, квантизацией</span>
+                </div>
+              </div>
+              <div class="tags">
+                <span class="tag">Streamlit</span>
+                <span class="tag">PyTorch</span>
+                <span class="tag">timm</span>
+                <span class="tag">ONNX</span>
+              </div>
+              <div class="project-actions">
+                <a class="btn btn-secondary btn-sm btn-github" href="https://github.com/Slipernik/ml-portfolio/tree/main/classification" target="_blank" rel="noreferrer"><span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.05c-3.34.73-4.04-1.42-4.04-1.42-.55-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.08 1.83 2.82 1.3 3.51 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.9 0-1.3.47-2.37 1.24-3.2-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.22a11.5 11.5 0 0 1 6 0c2.29-1.54 3.29-1.22 3.29-1.22.66 1.65.25 2.87.12 3.17.78.83 1.24 1.9 1.24 3.2 0 4.58-2.81 5.6-5.49 5.89.43.37.82 1.09.82 2.21v3.27c0 .32.21.69.83.58A12 12 0 0 0 12 .5Z"/></svg></span><span>GitHub</span></a>
+                <a class="btn btn-sm project-btn-accent" href="https://classification.slipernik.ru" target="_blank" rel="noreferrer"><span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3h6a1 1 0 0 1 1 1v6a1 1 0 1 1-2 0V6.41l-8.29 8.3a1 1 0 0 1-1.42-1.42L17.59 5H14a1 1 0 1 1 0-2ZM5 5h5a1 1 0 1 1 0 2H6v11h11v-4a1 1 0 1 1 2 0v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"/></svg></span><span>Streamlit demo</span></a>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section stack-exp-wrap" id="stack">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="eyebrow">Стек</div>
+            <h2>Стек, с которым я реально работаю в проектах</h2>
+            <p class="section-intro" style="color:#7c8ba5; max-width:780px;">
+              PyTorch-стек для CV-задач, инструменты для inference/demo и базовый data/NLP-набор.
+            </p>
+          </div>
+        </div>
+
+        <div class="stack-groups">
+          <article class="stack-group reveal">
+            <span class="stack-group-label">Core ML</span>
+            <h3>ML / CV</h3>
+            <div class="stack-items">
+              <span class="stack-item">PyTorch</span>
+              <span class="stack-item">PyTorch Lightning</span>
+              <span class="stack-item">MONAI</span>
+              <span class="stack-item">timm</span>
+              <span class="stack-item">Semantic Segmentation</span>
+              <span class="stack-item">Image Classification</span>
+            </div>
+          </article>
+          <article class="stack-group reveal">
+            <span class="stack-group-label">Data</span>
+            <h3>Data / NLP</h3>
+            <div class="stack-items">
+              <span class="stack-item">scikit-learn</span>
+              <span class="stack-item">transformers</span>
+              <span class="stack-item">NumPy</span>
+              <span class="stack-item">pandas</span>
+              <span class="stack-item">matplotlib</span>
+            </div>
+          </article>
+          <article class="stack-group reveal">
+            <span class="stack-group-label">Inference / Demo</span>
+            <h3>Inference / Demo</h3>
+            <div class="stack-items">
+              <span class="stack-item">Streamlit</span>
+              <span class="stack-item">ONNX</span>
+              <span class="stack-item">TensorBoard</span>
+              <span class="stack-item">CPU inference</span>
+              <span class="stack-item">Visualization</span>
+            </div>
+          </article>
+          <article class="stack-group reveal">
+            <span class="stack-group-label">Engineering</span>
+            <h3>Tools</h3>
+            <div class="stack-items">
+              <span class="stack-item">Git</span>
+              <span class="stack-item">SQL</span>
+              <span class="stack-item">PostgreSQL</span>
+              <span class="stack-item">Linux</span>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-light" id="experience">
+      <div class="container">
+        <div class="section-head reveal">
+          <div>
+            <div class="eyebrow">Опыт</div>
+            <h2>Опыт, который усиливает мой ML / CV профиль</h2>
+            <p class="section-intro">
+              Помимо ML-проектов, у меня есть опыт цифровых сервисов, Python-автоматизации, визуальной коммуникации и проектной работы.
+            </p>
+          </div>
+        </div>
+
+        <article class="timeline-card reveal">
+          <div class="timeline">
+            <div class="timeline-item">
+              <span class="time">В свободное время</span>
+              <strong>ML / Computer Vision Projects</strong>
+              <p>Разрабатываю проекты в Computer Vision и прикладном ML: segmentation, classification, inference, model comparison и demo-приложения. Главный кейс — Mapillary Vistas segmentation с кастомным dataset, сравнением архитектур и улучшением качества на редком классе <code>animal</code>.</p>
+            </div>
+            <div class="timeline-item">
+              <span class="time">Сейчас (по совместительству)</span>
+              <strong>Школа №703, Санкт-Петербург</strong>
+              <p>Обучаю школьников цифровым визуальным инструментам и основам проектной работы. Этот опыт усиливает мою способность объяснять сложные вещи через понятную структуру и практику.</p>
+            </div>
+            <div class="timeline-item">
+              <span class="time">Сейчас</span>
+              <strong>Библиотека роста и карьеры, Санкт-Петербург</strong>
+              <p>Работаю с цифровыми и образовательными проектами, сервисами на базе чат-ботов и Python-автоматизацией. Понимаю, как превращать техническое решение в понятный пользователю инструмент.</p>
+            </div>
+            <div class="timeline-item">
+              <span class="time">База</span>
+              <strong>Образование</strong>
+              <p>МФТИ, профессиональная переподготовка, Data Science. База в Python, классическом ML, deep learning и прикладных проектах.</p>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="contact-wrap" id="contact">
+      <div class="container">
+        <div class="contact-shell reveal">
+          <div class="contact-grid">
+            <div class="contact-panel">
+              <div class="eyebrow">Контакты</div>
+              <h2>Открыт к позициям Junior ML Engineer / Computer Vision Engineer</h2>
+              <p class="contact-lead">
+                Ищу команду, где смогу расти в задачах Computer Vision и прикладного ML и приносить пользу через разработку, сравнение и улучшение ML-решений, а также через аккуратную инженерную упаковку результата.
+              </p>
+              <div class="contact-actions">
+                <a class="btn btn-primary" href="mailto:auhmilin@gmail.com"><span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 5h16a2 2 0 0 1 2 2v10a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2Zm0 2v.24l8 5.33 8-5.33V7H4Zm16 10V9.64l-7.45 4.97a1 1 0 0 1-1.1 0L4 9.64V17h16Z"/></svg></span><span>Написать на email</span></a>
+                <a class="btn btn-secondary btn-github" href="https://github.com/Slipernik/ml-portfolio" target="_blank" rel="noreferrer"><span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 .5a12 12 0 0 0-3.79 23.39c.6.11.82-.26.82-.58v-2.05c-3.34.73-4.04-1.42-4.04-1.42-.55-1.38-1.33-1.75-1.33-1.75-1.09-.74.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.08 1.83 2.82 1.3 3.51 1 .11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.9 0-1.3.47-2.37 1.24-3.2-.13-.3-.54-1.52.12-3.17 0 0 1.01-.32 3.3 1.22a11.5 11.5 0 0 1 6 0c2.29-1.54 3.29-1.22 3.29-1.22.66 1.65.25 2.87.12 3.17.78.83 1.24 1.9 1.24 3.2 0 4.58-2.81 5.6-5.49 5.89.43.37.82 1.09.82 2.21v3.27c0 .32.21.69.83.58A12 12 0 0 0 12 .5Z"/></svg></span><span>Открыть GitHub</span></a>
+                <a class="btn btn-secondary" href="https://t.me/LeshkaGarmoshka" target="_blank" rel="noreferrer"><span class="btn-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M21.43 4.57a1.5 1.5 0 0 0-1.53-.25L3.9 10.68a1.5 1.5 0 0 0 .11 2.83l4.1 1.37 1.37 4.1a1.5 1.5 0 0 0 2.83.11l6.36-16a1.5 1.5 0 0 0-.24-1.52ZM9.6 14.4l-.86 3.02-1.01-3.03-3.03-1.01 12.91-5.14-8.01 8.16Zm1.42 1.42 6.59-6.71-5.14 12.91-1.45-4.36Z"/></svg></span><span>Написать в Telegram</span></a>
+              </div>
+              <div class="contact-highlights">
+                <span class="contact-highlight">Санкт-Петербург</span>
+                <span class="contact-highlight">Удалённо / офис / гибрид / релокация</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div>© 2026 Алексей Ухмылин — Junior ML Engineer / Computer Vision Engineer</div>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const items = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) {
+        items.forEach(el => el.classList.add('is-visible'));
+        return;
+      }
+
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            io.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
+
+      items.forEach((el, idx) => {
+        el.style.transitionDelay = (idx % 3) * 80 + 'ms';
+        io.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>
