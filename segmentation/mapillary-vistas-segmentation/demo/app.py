@@ -71,6 +71,12 @@ colors_map = {
   14: '#000000',
 }
 
+COMPARE_MASK_LEGEND = {
+  0: ('Расхождение масок', [200, 0, 0]),
+  1: ('Совпадение масок', [0, 200, 0]),
+  2: ('Игнорируемая зона (void)', [40, 40, 40]),
+}
+
 class_names = {
   0:  'Животные',
   1:  'Преграды',
@@ -291,11 +297,10 @@ def prediction(image, orig_mask=None):
             }
 
         mask = compare_mask
-        palette = np.array([
-            [200, 0, 0],
-            [0, 200, 0],
-            [40, 40, 40],
-        ], dtype=np.uint8)
+        palette = np.array(
+            [COMPARE_MASK_LEGEND[i][1] for i in sorted(COMPARE_MASK_LEGEND)],
+            dtype=np.uint8,
+        )
         
         best_miou_models.setdefault(arg_example, {})
         best_per_iou_models.setdefault(arg_example, {})
@@ -374,37 +379,34 @@ def visualisation():
 
 
 def legend(compare_mask):
-    if compare_mask:
-        palette = {
-            'Неверно предсказанные' : [200, 0, 0],
-            'Верно предсказанные': [0, 200, 0],
-            'Не участвует в оценке': [40, 40, 40],
-        }
+    legend_box = st.sidebar.container()
 
-        with st.sidebar:
-            st.markdown("### 🗂 Легенда")
-            for key, value in palette.items():
+    if compare_mask:
+        with legend_box:
+            st.markdown("### Легенда сравнения")
+            st.caption("Цвета показывают, где предсказанная маска совпадает с эталонной.")
+            for _, (label, value) in COMPARE_MASK_LEGEND.items():
                 r, g, b = value
                 st.markdown(
                     f"""
-                    <div style="display:flex;align-items:center;margin-bottom:2px;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
                         <div style="width:16px;height:16px;background:rgb({r},{g},{b});
-                                    border:1px solid #555;margin-right:8px;"></div>
-                        {key}
+                                    border:1px solid #555;flex:0 0 16px;"></div>
+                        {label}
                     </div>
                     """,
                     unsafe_allow_html=True
                 )
     else:
-        with st.sidebar:
-            st.markdown("### 🗂 Легенда")
+        with legend_box:
+            st.markdown("### Легенда")
             for i in range(len(class_names)):
                 c = colors_map.get(i, "#000000")
                 st.markdown(
                     f"""
-                    <div style="display:flex;align-items:center;margin-bottom:2px;">
+                    <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;">
                         <div style="width:16px;height:16px;background:{c};
-                                    border:1px solid #555;margin-right:8px;"></div>
+                                    border:1px solid #555;flex:0 0 16px;"></div>
                         {class_names[i]}
                     </div>
                     """,
@@ -483,16 +485,10 @@ def hex_to_rgb(hex_color):
 parent_path = '../models/'
 model_names = {    
     'UNET_EFFNET-B3': 'unet_effnet_ignore-epoch=39.ckpt',
-    'UNET_VGG-19': 'unet_vgg19_ignore-epoch=25.ckpt',    
+    'UNET_VGG-19': 'unet_vgg19_ignore-epoch=25.ckpt',
     'SEGFORMER_MIT-B2': 'segformer_ignore-epoch=46.ckpt',    
     'DEEPLAB_V3+_RESNET50': 'deeplab_v3_plus_ignore-epoch=42.ckpt',      
     'SF_MIT-B2_ENLARGED': 'segformer_enlarge-epoch=46.ckpt',
-    'U_E-B3 + CLAMP_WEIGHT': 'unet_effnet_clamp_weight-epoch=28.ckpt',
-    'U_E-B3 + SOFT_AUGM': 'unet_effnet_soft_augm-epoch=42.ckpt',
-    'U_E-B3 + AFFINE_OFF': 'unet_effnet_affine_off-epoch=48.ckpt',
-    'U_E-B3 + IMG_TRANSFORM_OFF': 'unet_effnet_soft_augm_common-epoch=29.ckpt',
-    'U_E-B3 + LOSS_COFF': 'unet_effnet_coff-epoch=44.ckpt',   
-    'U_E-B3 + SOFT_TVERSKY': 'unet_effnet_coff_tv-epoch=43.ckpt',      
 }
 
 with st.sidebar:
